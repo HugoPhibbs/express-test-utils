@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { Result, ValidationError, validationResult } from "express-validator";
 const httpMocks = require("node-mocks-http")
-import _ from "lodash";
+const _ = require("lodash")
 
 /** Creates a bearer authorization header */
 const bearerAuthHeader = (key: string): object => {
