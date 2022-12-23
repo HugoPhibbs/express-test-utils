@@ -5,4 +5,11 @@
 ## Installation
 ```shell
 npm install express-test-utils
+````
+
+## Usage
+```typescript
+const testUtils = require("express-test-utils")
+
+testUtils.testValidationChain(args)
 ```
