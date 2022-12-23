@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
-import { Result, ValidationError, validationResult } from "express-validator";
+import {ValidationError, Result} from "express-validator";
+
+const { validationResult } = require("express-validator")
 const httpMocks = require("node-mocks-http")
 const _ = require("lodash")
 
@@ -21,8 +22,8 @@ const bearerAuthHeader = (key: string): object => {
  * @return Result containing validation errors
  */
 async function testValidationChain(
-    req: Request,
-    res: Response,
+    req: Express.Request,
+    res: Express.Response,
     validationChain: Array<any>
 ): Promise<Result<ValidationError>> {
     await Promise.all(

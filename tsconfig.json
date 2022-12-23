@@ -99,8 +99,8 @@
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
     "skipLibCheck": true,                                /* Skip type checking all .d.ts files. */
-    "include": ["src"],
-    "rootDir": "./src",
     "outDir": "./js_out"
-  }
+  },
+  "include": ["src"],
+  "exclude": ["tests"]
 }
