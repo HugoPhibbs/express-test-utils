@@ -1,6 +1,6 @@
 {
   "name": "express-test-utils",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "",
   "main": "js/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "tsc",
     "prepare": "npm run build"
   },
-  "keywords": [],
+  "keywords": ["testing", "express", "express-validator"],
   "author": "",
   "license": "ISC",
   "devDependencies": {
