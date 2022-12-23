@@ -21,7 +21,7 @@ const bearerAuthHeader = (key: string): object => {
  * @param validationChain
  * @return Result containing validation errors
  */
-async function testValidationChain(
+export async function testValidationChain(
     req: Express.Request,
     res: Express.Response,
     validationChain: Array<any>
@@ -41,7 +41,7 @@ async function testValidationChain(
  * @param body
  * @param validationChain
  */
-async function testRequiredValues(
+export async function testRequiredValues(
     requiredValuePaths: Array<string>,
     body: any,
     validationChain: Array<any>

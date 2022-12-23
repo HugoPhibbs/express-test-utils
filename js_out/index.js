@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.testRequiredValues = exports.testValidationChain = void 0;
 const { validationResult } = require("express-validator");
 const httpMocks = require("node-mocks-http");
 const _ = require("lodash");
@@ -36,6 +37,7 @@ function testValidationChain(req, res, validationChain) {
         return validationResult(req);
     });
 }
+exports.testValidationChain = testValidationChain;
 /**
  * Tests required values in a request body
  *
@@ -55,6 +57,7 @@ function testRequiredValues(requiredValuePaths, body, validationChain) {
         expect((yield testValidationChain(request, response, validationChain)).isEmpty()).toBeFalsy();
     });
 }
+exports.testRequiredValues = testRequiredValues;
 module.exports = {
     bearerAuthHeader,
     testValidationChain,
