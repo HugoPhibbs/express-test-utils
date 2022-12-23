@@ -1,7 +1,7 @@
 /// <reference types="express-serve-static-core" />
 import { ValidationError, Result } from "express-validator";
 /**
- * Mock to run an express-validator middleware chain. Takes functionality out of the route itself
+ * Runs a request through a validation chain, returns any validation errors in doing so
  *
  * Makes it easy to test validation middleware
  *
@@ -12,7 +12,7 @@ import { ValidationError, Result } from "express-validator";
  * @param validationChain
  * @return Result containing validation errors
  */
-export declare function testValidationChain(req: Express.Request, res: Express.Response, validationChain: Array<any>): Promise<Result<ValidationError>>;
+export declare function validationErrors(req: Express.Request, res: Express.Response, validationChain: Array<any>): Promise<Result<ValidationError>>;
 /**
  * Tests required values in a request body
  *
@@ -20,4 +20,4 @@ export declare function testValidationChain(req: Express.Request, res: Express.R
  * @param body
  * @param validationChain
  */
-export declare function testRequiredValues(requiredValuePaths: Array<string>, body: any, validationChain: Array<any>): Promise<void>;
+export declare function testRequiredBodyValues(requiredValuePaths: Array<string>, body: any, validationChain: Array<any>): Promise<void>;

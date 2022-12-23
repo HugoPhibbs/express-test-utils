@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.testRequiredValues = exports.testValidationChain = void 0;
+exports.testRequiredBodyValues = exports.validationErrors = void 0;
 const { validationResult } = require("express-validator");
 const httpMocks = require("node-mocks-http");
 const _ = require("lodash");
@@ -18,7 +18,7 @@ const bearerAuthHeader = (key) => {
     return { Authorization: `Bearer ${key}` };
 };
 /**
- * Mock to run an express-validator middleware chain. Takes functionality out of the route itself
+ * Runs a request through a validation chain, returns any validation errors in doing so
  *
  * Makes it easy to test validation middleware
  *
@@ -29,7 +29,7 @@ const bearerAuthHeader = (key) => {
  * @param validationChain
  * @return Result containing validation errors
  */
-function testValidationChain(req, res, validationChain) {
+function validationErrors(req, res, validationChain) {
     return __awaiter(this, void 0, void 0, function* () {
         yield Promise.all(validationChain.map((middleware) => __awaiter(this, void 0, void 0, function* () {
             yield middleware(req, res, () => undefined);
@@ -37,7 +37,7 @@ function testValidationChain(req, res, validationChain) {
         return validationResult(req);
     });
 }
-exports.testValidationChain = testValidationChain;
+exports.validationErrors = validationErrors;
 /**
  * Tests required values in a request body
  *
@@ -45,21 +45,34 @@ exports.testValidationChain = testValidationChain;
  * @param body
  * @param validationChain
  */
-function testRequiredValues(requiredValuePaths, body, validationChain) {
+function testRequiredBodyValues(requiredValuePaths, body, validationChain) {
     return __awaiter(this, void 0, void 0, function* () {
         let request = httpMocks.createRequest({ body: body });
         let response = httpMocks.createResponse();
-        expect((yield testValidationChain(request, response, validationChain)).isEmpty()).toBeTruthy();
+        expect((yield validationErrors(request, response, validationChain)).isEmpty()).toBeTruthy();
         request = httpMocks.createRequest({
             body: _.omit(body, requiredValuePaths),
         });
         response = httpMocks.createResponse();
-        expect((yield testValidationChain(request, response, validationChain)).isEmpty()).toBeFalsy();
+        expect((yield validationErrors(request, response, validationChain)).isEmpty()).toBeFalsy();
     });
 }
-exports.testRequiredValues = testRequiredValues;
+exports.testRequiredBodyValues = testRequiredBodyValues;
+/**
+ * Checks that a request does not pass validation by passing it through a express-validator validation chain
+ *
+ * @param request Request object to be checked by the chain
+ * @param validationChain array for an express-validator validator chain
+ * @param shouldBeNoErrors boolean for if no errors should be raised by a request, once it has run through the validation chain
+ */
+function checkForValidationErrors(request, validationChain, shouldBeNoErrors) {
+    return __awaiter(this, void 0, void 0, function* () {
+        expect((yield validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty()).toBe(shouldBeNoErrors);
+    });
+}
 module.exports = {
     bearerAuthHeader,
-    testValidationChain,
-    testRequiredValues,
+    testValidationChain: validationErrors,
+    testRequiredBodyValues,
+    checkForValidationErrors
 };

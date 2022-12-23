@@ -10,7 +10,7 @@ const bearerAuthHeader = (key: string): object => {
 };
 
 /**
- * Mock to run an express-validator middleware chain. Takes functionality out of the route itself
+ * Runs a request through a validation chain, returns any validation errors in doing so
  *
  * Makes it easy to test validation middleware
  *
@@ -21,7 +21,7 @@ const bearerAuthHeader = (key: string): object => {
  * @param validationChain
  * @return Result containing validation errors
  */
-export async function testValidationChain(
+export async function validationErrors(
     req: Express.Request,
     res: Express.Response,
     validationChain: Array<any>
@@ -41,7 +41,7 @@ export async function testValidationChain(
  * @param body
  * @param validationChain
  */
-export async function testRequiredValues(
+export async function testRequiredBodyValues(
     requiredValuePaths: Array<string>,
     body: any,
     validationChain: Array<any>
@@ -50,7 +50,7 @@ export async function testRequiredValues(
     let response = httpMocks.createResponse();
     expect(
         (
-            await testValidationChain(request, response, validationChain)
+            await validationErrors(request, response, validationChain)
         ).isEmpty()
     ).toBeTruthy();
 
@@ -60,13 +60,25 @@ export async function testRequiredValues(
     response = httpMocks.createResponse();
     expect(
         (
-            await testValidationChain(request, response, validationChain)
+            await validationErrors(request, response, validationChain)
         ).isEmpty()
     ).toBeFalsy();
 }
 
+/**
+ * Checks that a request does not pass validation by passing it through a express-validator validation chain
+ *
+ * @param request Request object to be checked by the chain
+ * @param validationChain array for an express-validator validator chain
+ * @param shouldBeNoErrors boolean for if no errors should be raised by a request, once it has run through the validation chain
+ */
+async function checkForValidationErrors(request: Request, validationChain: Array<any>, shouldBeNoErrors: boolean) {
+    expect((await validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty()).toBe(shouldBeNoErrors)
+}
+
 module.exports = {
     bearerAuthHeader,
-    testValidationChain,
-    testRequiredValues,
+    testValidationChain: validationErrors,
+    testRequiredBodyValues,
+    checkForValidationErrors
 };
