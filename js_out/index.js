@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.testRequiredBodyValues = exports.validationErrors = void 0;
+const assert = require("assert");
 const { validationResult } = require("express-validator");
 const httpMocks = require("node-mocks-http");
 const _ = require("lodash");
@@ -50,13 +51,13 @@ function testRequiredBodyValues(requiredValuePaths, body, validationChain) {
     return __awaiter(this, void 0, void 0, function* () {
         let request = httpMocks.createRequest({ body: body });
         let response = httpMocks.createResponse();
-        expect((yield validationErrors(request, response, validationChain)).isEmpty()).toBeTruthy();
+        assert((yield validationErrors(request, response, validationChain)).isEmpty(), "Validation errors exist before checking that required parameters are actually required.");
         for (let path of requiredValuePaths) {
             request = httpMocks.createRequest({
                 body: _.omit(body, path),
             });
             response = httpMocks.createResponse();
-            expect((yield validationErrors(request, response, validationChain)).isEmpty()).toBeFalsy();
+            assert(!(yield validationErrors(request, response, validationChain)).isEmpty(), `Removing a value at path: ${path} did not cause an error to be thrown by the chain!`);
         }
     });
 }
