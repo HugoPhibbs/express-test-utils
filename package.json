@@ -1,6 +1,6 @@
 {
   "name": "express-test-utils",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "js_out/index.js",
   "types": "js_out/index.d.ts",
@@ -39,5 +39,10 @@
     "node-mocks-http": "^1.12.1",
     "prettier": "^2.8.1",
     "sinon": "^15.0.1"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HugoPhibbs/express-test-utils.git"
+  },
+  "homepage": "https://github.com/HugoPhibbs/express-test-utils#readme"
 }
