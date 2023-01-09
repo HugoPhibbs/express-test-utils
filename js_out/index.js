@@ -25,10 +25,10 @@ const bearerAuthHeader = (key) => {
  *
  * https://stackoverflow.com/questions/28769200/unit-testing-validation-with-express-validator
  *
- * @param req Request
- * @param res Response
- * @param validationChain
- * @return Result containing validation errors
+ * @param req Request an Express Request
+ * @param res Response an Express Response
+ * @param validationChain an express-validator validation chain to check for validation errors against
+ * @return Result containing validation errors, as per express-validator
  */
 function validationErrors(req, res, validationChain) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -91,5 +91,6 @@ module.exports = {
     bearerAuthHeader,
     validationErrors,
     testRequiredBodyValues,
-    checkForValidationErrors
+    checkForValidationErrors,
+    checkRequestAuthentication
 };
