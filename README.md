@@ -16,3 +16,11 @@ testUtils.testValidationChain(args)
 
 // Or whatever else you wish to do
 ```
+
+## Functions
+- See documentation linked above for full details
+
+- `testRequiredBodyValues(paths, body, chain)` tests whether given body values are required by a validation chain
+- `checkForValidationErrors(req, chain, shouldBeNoErrors)` checks for any validation errors against whether a request should pass a chain or not
+- `checkRequestAuthentication(req, auth)` checks if a request passes authentication with given function or not
+- `checkValidationErrors(req, res, chain)` checks for any express-validator validation errors for running the given request through the given chain, returns a Result from express-validator.
