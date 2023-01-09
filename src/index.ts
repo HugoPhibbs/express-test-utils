@@ -1,5 +1,6 @@
 import {ValidationError, Result} from "express-validator";
 import {Request, Response, NextFunction} from "express"
+const assert = require("assert")
 
 const { validationResult } = require("express-validator")
 const httpMocks = require("node-mocks-http")
@@ -51,22 +52,13 @@ export async function testRequiredBodyValues(
 ) {
     let request = httpMocks.createRequest({ body: body });
     let response = httpMocks.createResponse();
-    expect(
-        (
-            await validationErrors(request, response, validationChain)
-        ).isEmpty()
-    ).toBeTruthy();
-
+    assert((await validationErrors(request, response, validationChain)).isEmpty(), "Validation errors exist before checking that required parameters are actually required.")
     for (let path of requiredValuePaths) {
         request = httpMocks.createRequest({
             body: _.omit(body, path),
         });
         response = httpMocks.createResponse();
-        expect(
-          (
-            await validationErrors(request, response, validationChain)
-          ).isEmpty()
-        ).toBeFalsy();
+        assert(!(await validationErrors(request, response, validationChain)).isEmpty(), `Removing a value at path: ${path} did not cause an error to be thrown by the chain!`)
     }
 }
 
