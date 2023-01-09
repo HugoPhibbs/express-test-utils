@@ -77,14 +77,15 @@ function checkForValidationErrors(request, validationChain, shouldBeNoErrors) {
  * Checks that a request passes authentication with the given authenticate function
  *
  * @param request Request to be checked
- * @param authenticate authentication function to run. Expected to mark a response with a 401 status code, otherwise a next() function should be called
+ * @param authenticate authentication function to run. Expected to mark a response with a 401 status code if authentication failed, otherwise a next() function should be called
  */
 function checkRequestAuthentication(request, authenticate) {
     return __awaiter(this, void 0, void 0, function* () {
         const nextSpy = sinon.spy();
         const response = httpMocks.createResponse();
         yield authenticate(request, response, nextSpy);
-        expect(response.statusCode);
+        expect(nextSpy.statusCode != 401).toBeTruthy();
+        expect(nextSpy.calledOnce).toBeTruthy();
     });
 }
 module.exports = {
