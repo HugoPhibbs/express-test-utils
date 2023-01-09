@@ -16,8 +16,8 @@ export declare function validationErrors(req: Express.Request, res: Express.Resp
 /**
  * Tests required values in a request body
  *
- * @param requiredValuePaths
- * @param body
- * @param validationChain
+ * @param requiredValuePaths strings for the paths of required values within a body. Checks these are required one by one
+ * @param body object for an object to be added to an express request
+ * @param validationChain array for an express-validator validation chain to check against a request body
  */
-export declare function testRequiredBodyValues(requiredValuePaths: Array<string>, body: any, validationChain: Array<any>): Promise<void>;
+export declare function testRequiredBodyValues(requiredValuePaths: Array<string>, body: object, validationChain: Array<any>): Promise<void>;
