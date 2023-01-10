@@ -52,13 +52,13 @@ export async function testRequiredBodyValues(
 ) {
     let request = httpMocks.createRequest({ body: body });
     let response = httpMocks.createResponse();
-    assert((await validationErrors(request, response, validationChain)).isEmpty(), "Validation errors exist before checking that required parameters are actually required.")
+    expect((await validationErrors(request, response, validationChain)).isEmpty(), "Validation errors exist before checking that required parameters are actually required.").toBeTruthy()
     for (let path of requiredValuePaths) {
         request = httpMocks.createRequest({
             body: _.omit(body, path),
         });
         response = httpMocks.createResponse();
-        assert(!(await validationErrors(request, response, validationChain)).isEmpty(), `Removing a value at path: ${path} did not cause an error to be thrown by the chain!`)
+        expect(!(await validationErrors(request, response, validationChain)).isEmpty(), `Removing a value at path: ${path} did not cause an error to be thrown by the chain!`).toBeTruthy()
     }
 }
 
@@ -70,7 +70,8 @@ export async function testRequiredBodyValues(
  * @param shouldBeNoErrors boolean for if no errors should be raised by a request, once it has run through the validation chain
  */
 async function checkForValidationErrors(request: Request, validationChain: Array<any>, shouldBeNoErrors: boolean) {
-    expect((await validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty()).toBe(shouldBeNoErrors)
+    const failureMsg = shouldBeNoErrors ? "Validation errors exist when they should not!" : "Validation errors do not exist when they should!"
+    expect((await validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty(), failureMsg).toBe(shouldBeNoErrors)
 }
 
 /**
@@ -83,8 +84,8 @@ async function checkRequestAuthentication(request: Request, authenticate : (req:
     const nextSpy = sinon.spy()
     const response = httpMocks.createResponse()
     await authenticate(request, response, nextSpy);
-    expect(nextSpy.statusCode != 401).toBeTruthy()
-    expect(nextSpy.calledOnce).toBeTruthy()
+    expect(response.statusCode != 401, "Response failed authentication").toBeTruthy()
+    expect(nextSpy.calledOnce, "The next function was not called").toBeTruthy()
 }
 
 module.exports = {
