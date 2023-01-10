@@ -51,13 +51,13 @@ function testRequiredBodyValues(requiredValuePaths, body, validationChain) {
     return __awaiter(this, void 0, void 0, function* () {
         let request = httpMocks.createRequest({ body: body });
         let response = httpMocks.createResponse();
-        assert((yield validationErrors(request, response, validationChain)).isEmpty(), "Validation errors exist before checking that required parameters are actually required.");
+        expect((yield validationErrors(request, response, validationChain)).isEmpty(), "Validation errors exist before checking that required parameters are actually required.").toBeTruthy();
         for (let path of requiredValuePaths) {
             request = httpMocks.createRequest({
                 body: _.omit(body, path),
             });
             response = httpMocks.createResponse();
-            assert(!(yield validationErrors(request, response, validationChain)).isEmpty(), `Removing a value at path: ${path} did not cause an error to be thrown by the chain!`);
+            expect(!(yield validationErrors(request, response, validationChain)).isEmpty(), `Removing a value at path: ${path} did not cause an error to be thrown by the chain!`).toBeTruthy();
         }
     });
 }
@@ -71,7 +71,8 @@ exports.testRequiredBodyValues = testRequiredBodyValues;
  */
 function checkForValidationErrors(request, validationChain, shouldBeNoErrors) {
     return __awaiter(this, void 0, void 0, function* () {
-        expect((yield validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty()).toBe(shouldBeNoErrors);
+        const failureMsg = shouldBeNoErrors ? "Validation errors exist when they should not!" : "Validation errors do not exist when they should!";
+        expect((yield validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty(), failureMsg).toBe(shouldBeNoErrors);
     });
 }
 /**
@@ -85,8 +86,8 @@ function checkRequestAuthentication(request, authenticate) {
         const nextSpy = sinon.spy();
         const response = httpMocks.createResponse();
         yield authenticate(request, response, nextSpy);
-        expect(nextSpy.statusCode != 401).toBeTruthy();
-        expect(nextSpy.calledOnce).toBeTruthy();
+        expect(response.statusCode != 401, "Response failed authentication").toBeTruthy();
+        expect(nextSpy.calledOnce, "The next function was not called").toBeTruthy();
     });
 }
 module.exports = {
