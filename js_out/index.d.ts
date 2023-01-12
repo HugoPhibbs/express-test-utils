@@ -1,5 +1,6 @@
 /// <reference types="express-serve-static-core" />
 import { ValidationError, Result } from "express-validator";
+import { Request, Response, NextFunction } from "express";
 /**
  * Runs a request through a validation chain, returns any validation errors in doing so
  *
@@ -21,3 +22,18 @@ export declare function validationErrors(req: Express.Request, res: Express.Resp
  * @param validationChain array for an express-validator validation chain to check against a request body
  */
 export declare function testRequiredBodyValues(requiredValuePaths: Array<string>, body: object, validationChain: Array<any>): Promise<void>;
+/**
+ * Checks that a request does not pass validation by passing it through a express-validator validation chain
+ *
+ * @param request Request object to be checked by the chain
+ * @param validationChain array for an express-validator validator chain
+ * @param shouldBeNoErrors boolean for if no errors should be raised by a request, once it has run through the validation chain
+ */
+export declare function checkForValidationErrors(request: Request, validationChain: Array<any>, shouldBeNoErrors: boolean): Promise<void>;
+/**
+ * Checks that a request passes authentication with the given authenticate function
+ *
+ * @param request Request to be checked
+ * @param authenticate authentication function to run. Expected to mark a response with a 401 status code if authentication failed, otherwise a next() function should be called
+ */
+export declare function checkRequestAuthentication(request: Request, authenticate: (req: Request, res: Response, next: NextFunction) => Promise<void>): Promise<void>;

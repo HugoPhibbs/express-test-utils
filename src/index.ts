@@ -69,7 +69,7 @@ export async function testRequiredBodyValues(
  * @param validationChain array for an express-validator validator chain
  * @param shouldBeNoErrors boolean for if no errors should be raised by a request, once it has run through the validation chain
  */
-async function checkForValidationErrors(request: Request, validationChain: Array<any>, shouldBeNoErrors: boolean) {
+export async function checkForValidationErrors(request: Request, validationChain: Array<any>, shouldBeNoErrors: boolean) {
     const failureMsg = shouldBeNoErrors ? "Validation errors exist when they should not!" : "Validation errors do not exist when they should!"
     expect((await validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty(), failureMsg).toBe(shouldBeNoErrors)
 }
@@ -80,7 +80,7 @@ async function checkForValidationErrors(request: Request, validationChain: Array
  * @param request Request to be checked
  * @param authenticate authentication function to run. Expected to mark a response with a 401 status code if authentication failed, otherwise a next() function should be called
  */
-async function checkRequestAuthentication(request: Request, authenticate : (req:Request, res:Response, next: NextFunction) =>Promise<void>) {
+export async function checkRequestAuthentication(request: Request, authenticate : (req:Request, res:Response, next: NextFunction) =>Promise<void>) {
     const nextSpy = sinon.spy()
     const response = httpMocks.createResponse()
     await authenticate(request, response, nextSpy);

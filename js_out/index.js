@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.testRequiredBodyValues = exports.validationErrors = void 0;
+exports.checkRequestAuthentication = exports.checkForValidationErrors = exports.testRequiredBodyValues = exports.validationErrors = void 0;
 const assert = require("assert");
 const { validationResult } = require("express-validator");
 const httpMocks = require("node-mocks-http");
@@ -75,6 +75,7 @@ function checkForValidationErrors(request, validationChain, shouldBeNoErrors) {
         expect((yield validationErrors(request, httpMocks.createResponse(), validationChain)).isEmpty(), failureMsg).toBe(shouldBeNoErrors);
     });
 }
+exports.checkForValidationErrors = checkForValidationErrors;
 /**
  * Checks that a request passes authentication with the given authenticate function
  *
@@ -90,6 +91,7 @@ function checkRequestAuthentication(request, authenticate) {
         expect(nextSpy.calledOnce, "The next function was not called").toBeTruthy();
     });
 }
+exports.checkRequestAuthentication = checkRequestAuthentication;
 module.exports = {
     bearerAuthHeader,
     validationErrors,
