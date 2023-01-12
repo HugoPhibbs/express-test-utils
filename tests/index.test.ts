@@ -1,10 +1,13 @@
-import { testRequiredBodyValues, validationErrors } from "../js_out";
-import { validationResult } from "express-validator";
-
 const httpMocks = require("node-mocks-http");
 const { body } = require("express-validator");
 
 const index = require("../src/index");
+
+const {
+    checkForValidationErrors,
+    testRequiredBodyValues,
+    validationErrors,
+} = require("../src/index");
 
 /*
  * Creates and returns a test request object with an inputted body
@@ -43,10 +46,15 @@ describe("Testing checkRequestAuthentication", () => {
 describe("Testing checkForValidationErrors", () => {
     test("Test with expected pass of chain", async () => {
         const req = testRequestWithBody(simpleTestBody);
-        const res = httpMocks.createRequest();
+        const validationChain = [body("testValue").isBoolean().equals("true")];
+        await checkForValidationErrors(req, validationChain, true);
     });
 
-    test("Test with expected fail of chain", async () => {});
+    test("Test with expected fail of chain", async () => {
+        const req = testRequestWithBody(simpleTestBody);
+        const validationChain = [body("testValue").isBoolean().equals("false")];
+        await checkForValidationErrors(req, validationChain, false);
+    });
 });
 
 describe("Testing validationErrors", () => {
@@ -139,4 +147,4 @@ describe("Testing testRequiredBodyValues", () => {
 
 describe("Testing checkForValidationErrors", () => {
     // TODO
-})
+});
