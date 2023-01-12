@@ -1,4 +1,5 @@
 # express-test-utils
+![Node Build](https://github.com/HugoPhibbs/express-test-utils/actions/workflows/node.js.yml/badge.svg)
 
 -   Package for random express utility testing functions that I use regularly
 -   Documentation can be found [here](https://hugophibbs.github.io/express-test-utils/)
