@@ -1,4 +1,5 @@
 # express-test-utils
+
 ![Node Build](https://github.com/HugoPhibbs/express-test-utils/actions/workflows/node.js.yml/badge.svg)
 
 -   Package for random express utility testing functions that I use regularly
@@ -31,8 +32,9 @@ testUtils.testValidationChain(args);
 -   `testRequiredBodyValues(paths, body, chain)` tests whether given body values are required by a validation chain
 -   `checkForValidationErrors(req, chain, shouldBeNoErrors)` checks for any validation errors against whether a request should pass a chain or not
 -   `checkRequestAuthentication(req, auth)` checks if a request passes authentication with given function or not
--   `checkValidationErrors(req, res, chain)` checks for any express-validator validation errors for running the given request through the given chain, returns a Result from express-validator.
+-   `checkForValidationErrors(req, res, chain)` checks for any express-validator validation errors for running the given request through the given chain
 
 ## Contributing
-- If you would like to leave feedback or suggestions, please refer to our issues [page](https://github.com/HugoPhibbs/express-test-utils/issues).
-- PRs are welcome
+
+-   If you would like to leave feedback or suggestions, please refer to our issues [page](https://github.com/HugoPhibbs/express-test-utils/issues).
+-   PRs are welcome
